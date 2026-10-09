@@ -10,8 +10,7 @@
     "import random\n",
     "import numpy as np\n",
     "from sklearn.base import BaseEstimator, ClassifierMixin\n",
-    "from sklearn.preprocessing import StandardScaler\n",
-    "from sklearn.utils.validation import check_is_fitted\n",
+    "from sklearn.utils.validation import check_array, check_is_fitted, check_X_y\n",
     "\n",
     "from NEAT2 import Genotipo, Poblacion\n",
     "\n",
@@ -50,11 +49,12 @@
     "        self.prob_mutar_conexion = prob_mutar_conexion\n",
     "        self.prob_mutar_nodo = prob_mutar_nodo\n",
     "\n",
-    "   def fit(self, x, y):\n",
+    "    def fit(self, x, y):\n",
     "        semilla = 19\n",
     "        random.seed(semilla)\n",
     "        np.random.seed(semilla)\n",
-    "        x, y = self._validate_data(x, y)\n",
+    "        x, y = check_X_y(x, y)\n",
+    "        self.classes_ = np.unique(y)\n",
     "        poblacion = Poblacion(N=self.N,genotipos=lambda: ClasificacionGenotipo(num_entradas=x.shape[1], num_salidas=1), num_entrada=x.shape[1], \n",
     "                              num_salida=1, prob_mutar_peso=self.prob_mutar_peso, prob_mutar_conexion=self.prob_mutar_conexion, prob_mutar_nodo=self.prob_mutar_nodo)\n",
     "        self.mejor_fitnesshis_ = []\n",
@@ -73,7 +73,7 @@
     "\n",
     "    def predict(self, x):\n",
     "        check_is_fitted(self, attributes=[\"mejor_\"])\n",
-    "        x = self._validate_data(x, reset=False)\n",
+    "        x = check_array(x)\n",
     "        return np.array([self.mejor_.predecir(j) for j in x])"
    ]
   }

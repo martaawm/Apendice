@@ -25,8 +25,7 @@
     "        return torch.sigmoid(4.9 * z)\n",
     "\n",
     "class Retropropagacion(BaseEstimator, ClassifierMixin):\n",
-    "    def __init__(self, N=150, epocas=25, lr=0.01, batches=1):\n",
-    "        self.N = N\n",
+    "    def __init__(self, epocas=25, lr=0.01, batches=1):\n",
     "        self.epocas = epocas\n",
     "        self.lr = lr\n",
     "        self.batches = batches\n",
@@ -72,7 +71,7 @@
     "        with torch.no_grad():\n",
     "            x_t = torch.tensor(x, dtype=torch.float32)\n",
     "            salida = self.model_(x_t).reshape(-1).numpy()\n",
-    "        return (salida >= 0.5).astype(int)"
+    "        return (salida>=0.5).astype(int)"
    ]
   }
  ],
